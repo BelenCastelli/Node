@@ -15,24 +15,53 @@ let person2 = {
 }
 // *funcion de readline de question
 // rl.question(query[, options], callback)
+// * primer intento
+// function crearObjeto() {
+
+//     rl.question('¿cuál es tu nombre? ', (name) => {
+//         person2.nombre = name
+//         console.log(person2.nombre);
+
+//         rl.question('¿cuál es tu apellido? ', (surname) => {
+//             person2.apellido = surname
+//             console.log(person2.apellido);
+
+//             rl.question('¿cuál es tu edad? ', (age) => {
+//                 person2.edad = age
+//                 console.log(person2.edad);
+//                 rl.close();
 
 
-function crearObjeto() {
+//                 console.log(person2);
+//                 fs.writeFile('person2.json', JSON.stringify(person2), error => {
+//                     if(error){
+//                         console.log('error' + error);
+//                     } else  {
+//                         console.log('archivo escrito correctamente'); }
+//                 })
+//                 });
+//             });
+    
+//     });
+// }
 
-    rl.question('¿cuál es tu nombre? ', (name) => {
-        person2.nombre = name
-        console.log(person2.nombre);
+// *Modulando por funciones separadas:
 
-        rl.question('¿cuál es tu apellido? ', (surname) => {
-            person2.apellido = surname
-            console.log(person2.apellido);
+// *pongo como parametro un callback para que manejar la asincronía de rl.question.
+function pregunta(pregunta, propiedad, callback){
+    rl.question(pregunta, respuesta => {
+        person2[propiedad] = respuesta
+        console.log(person2[propiedad]);
+        callback()
 
-            rl.question('¿cuál es tu edad? ', (age) => {
-                person2.edad = age
-                console.log(person2.edad);
-                rl.close();
+    })
+}
 
-
+function crearObjeto2(){
+    pregunta('¿cual es tu nombre? ', 'nombre', () => {
+        pregunta('¿cual es tu apellido? ', 'apellido', () =>{
+            pregunta ('¿Cual es tu edad? ', 'edad', () =>{
+                rl.close()
                 console.log(person2);
                 fs.writeFile('person2.json', JSON.stringify(person2), error => {
                     if(error){
@@ -40,13 +69,12 @@ function crearObjeto() {
                     } else  {
                         console.log('archivo escrito correctamente'); }
                 })
-                });
-            });
-    
-    });
+            })
+        })
+    })
 }
-
-crearObjeto();
+// crearObjeto()
+crearObjeto2();
 
 rl.on('close', () =>{
     console.log('Proceso terminado');
