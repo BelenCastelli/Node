@@ -17,7 +17,7 @@ fs.writeFile(file, JSON.stringify(person), (error) => {
             
             fs.readFile(file, 'utf8', (error, data) =>{
                 if(!error){
-                    console.log(data);
+                    console.log(JSON.parse(data));
                 } else {
                     console.log('error' + error);
                 }
