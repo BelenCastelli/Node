@@ -2,10 +2,11 @@ const { log } = require('console');
 const Book = require('../models/book.js')
 
 let books = [
-    new Book ("1984", "George Orwell", 100 ),
-      new Book("Un mundo feliz", "Aldous Huxley", 101),
-      new Book ("Fahrenheit 451", "Ray Bradbury", 102 ),
-      new Book ("Orgullo y prejuicio", "Jane Austen", 103),
+    new Book ("1984", "George Orwell", 8.50, "https://imagessl4.casadellibro.com/a/l/s7/44/9788499890944.webp",100),
+    new Book("Un mundo feliz", "Aldous Huxley", 10.40, "https://imagessl7.casadellibro.com/a/l/s7/57/9788497594257.webp",101),
+    new Book ("Fahrenheit 451", "Ray Bradbury", 10.40, "https://imagessl8.casadellibro.com/a/l/s7/08/9788466345408.webp",102),
+    new Book ("Orgullo y prejuicio", "Jane Austen", 11.95, "https://imagessl2.casadellibro.com/a/l/s7/42/9788467045642.webp",103),
+
 ]
 
 // let books = null
@@ -14,13 +15,13 @@ let books = [
 function getBooks(req, res){
     let respuesta; 
     if(books != null){
-        respuesta = books
+        respuesta = {error: false, codigo:200, data: books}
     } else {
         respuesta = {error: true, codigo:200, mensaje: 'el libro no existe'}
     }
 
-    res.send(respuesta)
-}
+    res.json(respuesta)
+} 
 
 function getBooksId(req, res){
     let respuesta; 
@@ -50,7 +51,7 @@ function getBooksId(req, res){
         }
 
     }
-    res.send(respuesta)
+    res.json(respuesta)
 }
 
 function postBooks(req, res){
@@ -82,7 +83,7 @@ function postBooks(req, res){
         if(books != null){
             let existe = books.some(book =>book.id_book === id_book)
             if(!existe) {
-                books.push(new Book(req.body.title, req.body.author, req.body.id_book))
+                books.push(new Book(req.body.title, req.body.author, req.body.price, req.body.photo, req.body.id_book))
                 respuesta = {error: false, codigo: 200, data: books}
             } else {
                 respuesta = {error:true, codigo: 200, mensaje: 'ya existe el libro'}
@@ -105,6 +106,9 @@ function putBook(req, res){
         if(booksFilter.length > 0) {
             booksFilter[0].title = req.body.title
             booksFilter[0].author = req.body.author
+            booksFilter[0].price = req.body.price
+            booksFilter[0].photo = req.body.photo
+            booksFilter[0].id_book = req.body.id_book
             respuesta = {error:false, codigo:200, mensaje: 'libro actualizado', data: booksFilter}
         } else {
             respuesta = {error:true, codigo: 200, mensaje: 'no existe el libro'}
@@ -136,7 +140,7 @@ function deleteBook(req, res){
     } else {
         respuesta = {error:true, codigo: 200, mensaje: 'no existen libros'}
     }
-    res.send(respuesta)
+    res.json(respuesta)
 
     }
 
