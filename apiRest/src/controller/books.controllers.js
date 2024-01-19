@@ -17,7 +17,7 @@ function getBooks(req, res){
     if(books != null){
         respuesta = {error: false, codigo:200, data: books}
     } else {
-        respuesta = {error: true, codigo:200, mensaje: 'el libro no existe'}
+        respuesta = {error: true, codigo:200, mensaje: 'No existen libros'}
     }
 
     res.json(respuesta)
@@ -46,8 +46,9 @@ function getBooksId(req, res){
         console.log(booksFilter);
         if(booksFilter.length > 0) {
             respuesta = {error: false, codigo: 200, data: booksFilter}
+            console.log(booksFilter);
         } else {
-            respuesta = {error:true, codigo: 200, mensaje: 'no existe el libro'}
+            respuesta = {error:true, codigo: 200, mensaje: `No existe el libro con la ref: ${id_book}`}
         }
 
     }
@@ -86,11 +87,11 @@ function postBooks(req, res){
                 books.push(new Book(req.body.title, req.body.author, req.body.price, req.body.photo, req.body.id_book))
                 respuesta = {error: false, codigo: 200, data: books}
             } else {
-                respuesta = {error:true, codigo: 200, mensaje: 'ya existe el libro'}
+                respuesta = {error:true, codigo: 200, mensaje: `El libro con la ref: ${id_book} ya existe`  }
             }
 
         } else {
-            respuesta = {error:true, codigo: 200, mensaje: 'no existen libros'}
+            respuesta = {error:true, codigo: 200, mensaje: 'No existen libros'}
         }
 
     res.send(respuesta)
@@ -109,13 +110,13 @@ function putBook(req, res){
             booksFilter[0].price = req.body.price
             booksFilter[0].photo = req.body.photo
             booksFilter[0].id_book = req.body.id_book
-            respuesta = {error:false, codigo:200, mensaje: 'libro actualizado', data: booksFilter}
+            respuesta = {error:false, codigo:200, mensaje: `El libro con ref: ${id_book} actualizado`, data: booksFilter}
         } else {
-            respuesta = {error:true, codigo: 200, mensaje: 'no existe el libro'}
+            respuesta = {error:true, codigo: 200, mensaje: `No se ha encontrado el libro con la ref: ${id_book}`}
         }
 
     } else {
-        respuesta = {error:true, codigo: 200, mensaje: 'no existen libros'}
+        respuesta = {error:true, codigo: 200, mensaje: 'No existen libros'}
     }
     res.send(respuesta)
 }
@@ -131,14 +132,14 @@ function deleteBook(req, res){
     
         if(indice != -1){
         books.splice(indice, 1)
-        respuesta = {error:false, codigo:200, mensaje: 'libro eliminado', data: books}
+        respuesta = {error:false, codigo:200, mensaje: `Libro con ref: ${id_book} eliminado`, data: books}
     
         } else {
-            respuesta = {error:true, codigo: 200, mensaje: 'no existe el libro'}
+            respuesta = {error:true, codigo: 200, mensaje: `No existe el libro con ref ${id_book}`}
         }
 
     } else {
-        respuesta = {error:true, codigo: 200, mensaje: 'no existen libros'}
+        respuesta = {error:true, codigo: 200, mensaje: 'No existen libros'}
     }
     res.json(respuesta)
 
